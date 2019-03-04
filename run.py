@@ -6,14 +6,38 @@ import config
 import utils
 import multiprocessing
 import urllib3
+from bilibiliupload import *
 urllib3.disable_warnings()
 
+import atexit
+
+@atexit.register
+def upload():
+    b = Bilibili()
+    b.login(config.username, config.password)
+    print('正在上传')
+    videos = [f for f in os.listdir('files') if f.endswith('.flv')]
+
+    tag = ['陈哥', '陈哥1', '直播', '录播']
+
+    desc = '陈哥直播录播'
+
+    for video in videos:
+        filepath = os.path.abspath('./files/' + video)
+        title = os.path.basename(filepath)[:-4]
+        tid = 17
+        b.upload(VideoPart(filepath), title, tid, tag, desc)
+        os.rename(filepath, filepath + '.uploaded')
+        time.sleep(60)
+
+    print('上传成功')
 
 class BiliBiliLiveRecorder(BiliBiliLive):
     def __init__(self, room_id):
         super().__init__(room_id)
         self.inform = utils.inform
         self.print = utils.print_log
+        self.room_title = None
 
     def check(self, interval):
         while True:
@@ -21,6 +45,7 @@ class BiliBiliLiveRecorder(BiliBiliLive):
             if room_info['status']:
                 self.inform(room_id=self.room_id,desp=room_info['roomname'])
                 self.print(self.room_id, room_info['roomname'])
+                self.room_title = room_info['roomname']
                 break
             else:
                 self.print(self.room_id, '等待开播')
@@ -36,15 +61,20 @@ class BiliBiliLiveRecorder(BiliBiliLive):
 
     def run(self):
         while True:
-            urls = self.check(interval=5*60)
+            urls = self.check(interval=60)
             filename = utils.generate_filename(self.room_id)
+            filename =  filename.split('.flv')
+            filename = filename[0]
+            filename = filename.split('_')
+            filename.pop()
+            filename.append(self.room_title)
+            filename = '_'.join(filename) + '.flv'
             c_filename = os.path.join(os.getcwd(), 'files', filename)
             self.record(urls[0], c_filename)
             self.print(self.room_id, '录制完成')
-
+            upload()
 
 if __name__ == '__main__':
-    print(sys.argv)
     if len(sys.argv) == 2:
         input_id = [str(sys.argv[1])]
     elif len(sys.argv) == 1:

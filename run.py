@@ -24,7 +24,7 @@ def upload():
 
     for video in videos:
         filepath = os.path.abspath('./files/' + video)
-        title = os.path.basename(filepath)[:-4]
+        title = config.title_prefix + os.path.basename(filepath)[:-4]
         tid = 17
         b.upload(VideoPart(filepath), title, tid, tag, desc)
         os.rename(filepath, filepath + '.uploaded')

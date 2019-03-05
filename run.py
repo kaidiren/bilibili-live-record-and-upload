@@ -20,7 +20,7 @@ def upload():
 
     tag = ['陈哥', '陈哥1', '直播', '录播']
 
-    desc = '陈哥直播录播'
+    desc = '陈哥404直播录播, 服务器自动录播自动投稿 喜欢的可以去关注陈哥1 https://live.bilibili.com/404'
 
     for video in videos:
         filepath = os.path.abspath('./files/' + video)

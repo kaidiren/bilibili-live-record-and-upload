@@ -24,6 +24,11 @@ def upload():
 
     for video in videos:
         filepath = os.path.abspath('./files/' + video)
+        stat = os.stat(filepath)
+        if stat.st_size <= 200 * 1024 * 1024:
+            os.rename(filepath, filepath + '.skip')
+            continue
+
         title = config.title_prefix + os.path.basename(filepath)[:-4]
         tid = 17
         b.upload(VideoPart(filepath), title, tid, tag, desc)

@@ -18,6 +18,8 @@ for video in videos:
     if stat.st_size <= 20 * 1024 * 1024:
         os.rename(filepath, filepath + '.skip')
         continue
+    if time.time() - f.st_mtime <= 60 * 30:
+        continue
 
     title = config.title_prefix + os.path.basename(filepath)[:-4]
     tid = 17

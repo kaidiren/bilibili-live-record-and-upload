@@ -10,7 +10,7 @@ videos = [f for f in os.listdir('files') if f.endswith('.flv')]
 
 tag = ['陈哥', '陈哥1', '直播', '录播']
 
-desc = '陈哥404直播录播, 服务器自动录播自动投稿 喜欢的可以去关注陈哥1 https://live.bilibili.com/404'
+desc = '陈哥404直播录播, 服务器自动录播自动投稿 喜欢的可以去关注陈哥1 https://live.bilibili.com/404 \n 说明：服务器每天实时录制，在凌晨2点定时上传(一家之主可能熬夜)，审稿需要一定时间（2-6小时）请耐心等待，如果一切顺利中午12点前应该可以看到 \n 文件大小达到 4 GB 会自动分割（文件过大容易上传失败），请根据标题里的时间自行翻阅'
 
 for video in videos:
     filepath = os.path.abspath('./files/' + video)

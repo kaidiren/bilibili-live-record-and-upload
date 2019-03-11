@@ -35,6 +35,6 @@ videos = [f for f in os.listdir('files') if f.endswith('.uploaded')]
 for video in videos:
     filepath = os.path.abspath('./files/' + video)
     stat = os.stat(filepath)
-    if time.time() - stat.st_mtime >= 3600 * 24 * 5:
+    if time.time() - stat.st_mtime >= 3600 * 24 * 7:
         os.remove(filepath)
         print(filepath, 'deleted')

@@ -1,0 +1,8 @@
+0 0 * * * cd /root/B/bili/bilibili-live-record-and-upload; /root/B/bili/bin/python -u /root/B/bili/bilibili-live-record-and-upload/upload.py >> u.log
+0 2 * * * cd /root/B/bili/bilibili-live-record-and-upload; /root/B/bili/bin/python -u /root/B/bili/bilibili-live-record-and-upload/upload.py >> u.log
+0 5 * * * cd /root/B/bili/bilibili-live-record-and-upload; /root/B/bili/bin/python -u /root/B/bili/bilibili-live-record-and-upload/upload.py >> u.log
+0 10 * * * cd /root/B/bili/bilibili-live-record-and-upload; /root/B/bili/bin/python -u /root/B/bili/bilibili-live-record-and-upload/upload.py >> u.log
+0 12 * * * cd /root/B/bili/bilibili-live-record-and-upload; /root/B/bili/bin/python -u /root/B/bili/bilibili-live-record-and-upload/upload.py >> u.log
+0 17 * * * cd /root/B/bili/bilibili-live-record-and-upload; /root/B/bili/bin/python -u /root/B/bili/bilibili-live-record-and-upload/upload.py >> u.log
+0 19 * * * cd /root/B/bili/bilibili-live-record-and-upload; /root/B/bili/bin/python -u /root/B/bili/bilibili-live-record-and-upload/upload.py >> u.log
+0 22 * * * cd /root/B/bili/bilibili-live-record-and-upload; /root/B/bili/bin/python -u /root/B/bili/bilibili-live-record-and-upload/upload.py >> u.log

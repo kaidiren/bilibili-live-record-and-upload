@@ -1,6 +1,7 @@
 
 import config
 import time
+import os
 from bilibiliupload import *
 
 b = Bilibili()
@@ -29,3 +30,11 @@ for video in videos:
     print('上传成功', filepath)
     time.sleep(60)
 
+videos = [f for f in os.listdir('files') if f.endswith('.uploaded')]
+
+for video in videos:
+    filepath = os.path.abspath('./files/' + video)
+    stat = os.stat(filepath)
+    if time.time() - stat.st_mtime >= 3600 * 24 * 5:
+        os.remove(filepath)
+        print(filepath, 'deleted')

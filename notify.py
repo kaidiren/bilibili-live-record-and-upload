@@ -6,6 +6,7 @@ import config
 import utils
 import urllib3
 urllib3.disable_warnings()
+import datetime
 
 
 def inform(title):
@@ -32,6 +33,7 @@ class BiliBiliLiveRecorder(BiliBiliLive):
             if self.notify:
                 inform(room_info['roomname'])
                 self.notify = False
+            self.print(self.room_id, '直播中')
         else:
             self.print(self.room_id, '等待开播')
             self.notify = True

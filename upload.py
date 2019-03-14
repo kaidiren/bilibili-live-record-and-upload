@@ -23,7 +23,8 @@ for video in videos:
     name = os.path.basename(filepath)
     title = '[' + name[:8] + ']' + name[14:-4]
     tid = 17
-    b.upload(VideoPart(filepath), title, tid, tag.append(name[:13]), desc)
+    tag.append(str(name[:13]))
+    b.upload(VideoPart(filepath), title, tid, tag, desc)
     os.rename(filepath, filepath + '.uploaded')
     print('上传成功', filepath)
     time.sleep(60)

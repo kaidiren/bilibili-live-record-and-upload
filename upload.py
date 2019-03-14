@@ -21,9 +21,8 @@ for video in videos:
         continue
     print('正在上传', video)
     name = os.path.basename(filepath)
-    title = '[' + name[:8] + name[9:11] + ']' + name[14:-4]
+    title = '[' + name[:8] + ']' + '['+name[9:11] + ':'+name[11:13] + ']' + name[14:-4]
     tid = 17
-    tag.append(str(name[:13]))
     b.upload(VideoPart(filepath), title, tid, tag, desc)
     os.rename(filepath, filepath + '.uploaded')
     print('上传成功', filepath)

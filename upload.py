@@ -14,7 +14,7 @@ for video in videos:
     tag = ['陈哥404直播录播', '无情服务器录播', '404录播姬']
     filepath = os.path.abspath('./files/' + video)
     stat = os.stat(filepath)
-    if stat.st_size <= 20 * 1024 * 1024:
+    if stat.st_size <= 200 * 1024 * 1024:
         os.rename(filepath, filepath + '.skip')
         continue
     if time.time() - stat.st_mtime <= 60 * 10:

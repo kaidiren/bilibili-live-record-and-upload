@@ -1,7 +1,21 @@
 import config
 import time
 import os
+import sys
+import requests
+
 from bilibiliupload import Bilibili, VideoPart
+
+if os.path.isfile('files/.uploading'):
+    if time.time() - os.stat('files/.uploading').st_mtime > 3600 * 4:
+        requests.get(url=config.pushbear, params={
+            'text': '上传可能出BUG了',
+            'desp': '上传可能出BUG了',
+            'sendkey': config.sendkey
+        })
+    sys.exit()
+
+open('files/.uploading', 'a').close()
 
 b = Bilibili()
 b.login(config.username, config.password)
@@ -17,7 +31,7 @@ for video in videos:
     if stat.st_size <= 200 * 1024 * 1024:
         os.rename(filepath, filepath + '.skip')
         continue
-    if time.time() - stat.st_mtime <= 60 * 10:
+    if time.time() - stat.st_mtime <= 60 * 5:
         continue
     print('正在上传', video)
     name = os.path.basename(filepath)
@@ -36,3 +50,5 @@ for video in videos:
     if time.time() - stat.st_mtime >= 3600 * 24 * 7:
         os.remove(filepath)
         print(filepath, 'deleted')
+
+os.remove('files/.uploading')

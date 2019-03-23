@@ -42,7 +42,7 @@ for video in videos:
     print('上传成功', filepath)
     time.sleep(60)
 
-videos = [f for f in os.listdir('files') if f.endswith('.uploaded')]
+videos = [f for f in os.listdir('files') if f.endswith('.uploaded') or f.endswith('.bak') or f.endswith('.merged')]
 
 for video in videos:
     filepath = os.path.abspath('./files/' + video)

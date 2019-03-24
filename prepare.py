@@ -33,7 +33,7 @@ def concat(files):
     f.close()
 
 
-    print("ffmpeg -f concat -safe 0 -i files/inputs.txt -c copy {} -y".format(new_file_name))
+    #print("ffmpeg -f concat -safe 0 -i files/inputs.txt -c copy {} -y".format(new_file_name))
     _, text = commands.getstatusoutput("ffmpeg -f concat -safe 0 -i files/inputs.txt -c copy {} -y".format(new_file_name))
     text = text.split('\n')
     for line in text:

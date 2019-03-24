@@ -3,6 +3,8 @@ import time
 import os
 import sys
 import requests
+import commands
+import math
 
 from bilibiliupload import Bilibili, VideoPart
 
@@ -29,16 +31,34 @@ for video in videos:
     tag = ['陈哥404直播录播', '无情服务器录播', '404录播姬']
     filepath = os.path.abspath('./files/' + video)
     stat = os.stat(filepath)
+    parts = VideoPart(filepath)
     if stat.st_size <= 200 * 1024 * 1024:
         os.rename(filepath, filepath + '.skip')
         continue
-    if time.time() - stat.st_mtime <= 60 * 5:
+    if time.time() - stat.st_mtime <= 5 * 60:
         continue
+    if stat.st_size >= 8 * 1000 * 1000 * 1000:
+        code, text=commands.getstatusoutput("ffmpeg -i {}".format(filepath))
+        text = text.split('\n')
+        duration = ''
+        for line in text:
+            if "Duration:" in line:
+                duration = line[12:23]
+
+        if duration != '':
+            duration = duration.split(':')
+            hour = math.ceil((int(duration[0]) * 60 + int(duration[1])) / 2.0 / 60.0)
+            hour = int(hour)
+            p1 = 'ffmpeg -i {} -ss 00:00:00 -t 0{}:00:00 -vcodec copy -acodec copy {}.p1.flv -y'.format(filepath, hour, filepath)
+            p2 = 'ffmpeg -i {} -ss 0{}:00:00 -vcodec copy -acodec copy {}.p2.flv -y'.format(filepath, hour, filepath)
+            commands.getstatusoutput(p1)
+            commands.getstatusoutput(p2)
+            parts = [VideoPart(filepath + '.p1.flv', 'P1'), VideoPart(filepath+ '.p2.flv', 'P2')]
     print('正在上传', video)
     name = os.path.basename(filepath)
     title = '[' + name[:8] + ']' + '['+name[9:11] + ':'+name[11:13] + ']' + name[14:-4]
     tid = 17
-    b.upload(VideoPart(filepath), title, tid, tag, desc)
+    b.upload(parts, title, tid, tag, desc)
     os.rename(filepath, filepath + '.uploaded')
     print('上传成功', filepath)
     time.sleep(60)

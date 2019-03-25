@@ -35,8 +35,8 @@ for video in videos:
     if stat.st_size <= 200 * 1024 * 1024:
         os.rename(filepath, filepath + '.skip')
         continue
-    if time.time() - stat.st_mtime <= 5 * 60:
-        continue
+    # if time.time() - stat.st_mtime <= 5 * 60:
+    #     continue
     if stat.st_size >= 8 * 1000 * 1000 * 1000:
         code, text=subprocess.getstatusoutput("ffmpeg -i {}".format(filepath))
         text = text.split('\n')

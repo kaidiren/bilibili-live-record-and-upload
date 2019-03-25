@@ -3,7 +3,7 @@ import time
 import os
 import sys
 import requests
-import commands
+import subprocess
 import math
 
 from bilibiliupload import Bilibili, VideoPart
@@ -38,7 +38,7 @@ for video in videos:
     if time.time() - stat.st_mtime <= 5 * 60:
         continue
     if stat.st_size >= 8 * 1000 * 1000 * 1000:
-        code, text=commands.getstatusoutput("ffmpeg -i {}".format(filepath))
+        code, text=subprocess.getstatusoutput("ffmpeg -i {}".format(filepath))
         text = text.split('\n')
         duration = ''
         for line in text:
@@ -51,8 +51,8 @@ for video in videos:
             hour = int(hour)
             p1 = 'ffmpeg -i {} -ss 00:00:00 -t 0{}:00:00 -vcodec copy -acodec copy {}.p1.flv -y'.format(filepath, hour, filepath)
             p2 = 'ffmpeg -i {} -ss 0{}:00:00 -vcodec copy -acodec copy {}.p2.flv -y'.format(filepath, hour, filepath)
-            commands.getstatusoutput(p1)
-            commands.getstatusoutput(p2)
+            subprocess.getstatusoutput(p1)
+            subprocess.getstatusoutput(p2)
             parts = [VideoPart(filepath + '.p1.flv', 'P1'), VideoPart(filepath+ '.p2.flv', 'P2')]
     print('正在上传', video)
     name = os.path.basename(filepath)

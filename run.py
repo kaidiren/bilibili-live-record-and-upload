@@ -33,7 +33,7 @@ class BiliBiliLiveRecorder(BiliBiliLive):
         self.print(self.room_id, '√ 正在录制...' + self.room_id)
         resp = requests.get(record_url, stream=True)
         with open(output_filename, "wb") as f:
-            for chunk in resp.iter_content(chunk_size=512):
+            for chunk in resp.iter_content(chunk_size=8192):
                 f.write(chunk) if chunk else None
                 if os.stat(output_filename).st_size >= config.max_sigle_file_size:
                     f.close()

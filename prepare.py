@@ -28,6 +28,7 @@ def concat(files):
     for file in files:
         inputs.append("file '{}'".format(file))
     inputs = '\n'.join(inputs)
+    print(inputs)
     f = open('files/inputs.txt', 'w')
     f.write(inputs)
     f.close()

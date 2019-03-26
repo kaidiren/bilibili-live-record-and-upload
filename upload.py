@@ -63,7 +63,7 @@ for video in videos:
     print('上传成功', filepath)
     time.sleep(60)
 
-videos = [f for f in os.listdir('files') if f.endswith('.uploaded') or f.endswith('.bak') or f.endswith('.merged')]
+videos = [f for f in os.listdir('files') if f.endswith('.uploaded') or f.endswith('.bak') or f.endswith('.merged') or f.endswith('.skip')]
 videos.sort()
 
 for video in videos:

@@ -25,7 +25,7 @@ b.login(config.username, config.password)
 videos = [f for f in os.listdir('files') if f.endswith('.flv')]
 videos.sort()
 
-desc = '[已授权]陈哥404直播录播, 仅用于回看，请勿商业使用 请关注陈哥直播间 https://live.bilibili.com/404\n服务器每天自动录播自动投稿，文件过大自动分P，凌晨2点定时上传，审稿需要3-6小时请耐心等待\n本录播不做整理，喜欢看整理过的录播可以去 咲茗奇 空间 11693477 观看，催更毫无意义，谢谢~'
+desc = '[已授权]陈哥404直播录播, 仅用于回看，请勿商业使用 请关注陈哥直播间 https://live.bilibili.com/404\n服务器每天自动录播自动投稿，文件过大自动分P，凌晨2点定时上传，审稿需要3-6小时请耐心等待\n本录播不做整理，喜欢看整理过的录播可以去空间 11693477 观看，催更毫无意义，谢谢~'
 
 for video in videos:
     tag = ['陈哥404直播录播', '无情服务器录播', '404录播姬']

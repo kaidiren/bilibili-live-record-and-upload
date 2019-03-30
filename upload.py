@@ -59,7 +59,13 @@ for video in videos:
     title = '[' + name[:8] + ']' + '['+name[9:11] + ':'+name[11:13] + ']' + name[14:-4]
     tid = 17
     b.upload(parts, title, tid, tag, desc)
-    os.rename(filepath, filepath + '.uploaded')
+
+    if len(parts) > 1:
+        for part in parts:
+            os.rename(part.path, part.path + '.uploaded')
+        os.rename(filepath, filepath + '.bak')
+    else:
+        os.rename(filepath, filepath + '.uploaded')
     print('上传成功', filepath)
     time.sleep(60)
 

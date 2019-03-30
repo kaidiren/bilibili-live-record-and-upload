@@ -9,6 +9,9 @@ import commands
 from flvlib.scripts import fix_flv
 from flvlib.scripts import retimestamp_flv
 
+if os.path.isfile('files/.recording'):
+    sys.exit()
+
 
 def copy(src,dest,length,bufsize=10*1024*1024):
     with open(src,'rb') as fout:

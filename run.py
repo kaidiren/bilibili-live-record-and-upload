@@ -26,11 +26,13 @@ class BiliBiliLiveRecorder(BiliBiliLive):
                 break
             else:
                 self.print(self.room_id, '等待开播')
+                os.remove('files/.recording') if os.path.exists('files/.recording') else None
             time.sleep(interval)
         return self.get_live_urls()
 
     def record(self, record_url, output_filename):
         self.print(self.room_id, '√ 正在录制...' + self.room_id)
+        open('files/.recording', 'a').close()
         resp = requests.get(record_url, stream=True)
         with open(output_filename, "wb") as f:
             for chunk in resp.iter_content(chunk_size=8192):
@@ -38,6 +40,7 @@ class BiliBiliLiveRecorder(BiliBiliLive):
                 if os.stat(output_filename).st_size >= config.max_sigle_file_size:
                     f.close()
                     break
+        os.remove('files/.recording') if os.path.exists('files/.recording') else None
 
     def run(self):
         while True:

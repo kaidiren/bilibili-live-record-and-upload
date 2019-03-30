@@ -8,6 +8,9 @@ import math
 
 from bilibiliupload import Bilibili, VideoPart
 
+if os.path.isfile('files/.recording'):
+    sys.exit()
+
 if os.path.isfile('files/.uploading'):
     if time.time() - os.stat('files/.uploading').st_mtime > 3600 * 4:
         requests.get(url=config.pushbear, params={
@@ -35,7 +38,7 @@ for video in videos:
     if stat.st_size <= 200 * 1024 * 1024:
         os.rename(filepath, filepath + '.skip')
         continue
-    if time.time() - stat.st_mtime <= 100:
+    if time.time() - stat.st_mtime <= 60:
        continue
     if stat.st_size >= 8 * 1000 * 1000 * 1000:
         code, text=subprocess.getstatusoutput("ffmpeg -i {}".format(filepath))
@@ -76,7 +79,8 @@ for video in videos:
     filepath = os.path.abspath('./files/' + video)
     stat = os.stat(filepath)
     if time.time() - stat.st_mtime >= 3600 * 24 * 7:
-        os.remove(filepath)
+        os.remove(filepath) if os.path.exists(filepath) else None
         print(filepath, 'deleted')
 
-os.remove('files/.uploading')
+os.remove('files/.recording') if os.path.exists('files/.recording') else None
+

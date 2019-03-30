@@ -90,3 +90,5 @@ for video in videos:
 
 if len(files) > 1:
     concat(files)
+
+time.sleep(120)

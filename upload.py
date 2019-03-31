@@ -82,5 +82,4 @@ for video in videos:
         os.remove(filepath) if os.path.exists(filepath) else None
         print(filepath, 'deleted')
 
-os.remove('files/.recording') if os.path.exists('files/.recording') else None
-
+os.remove('files/.uploading') if os.path.exists('files/.uploading') else None

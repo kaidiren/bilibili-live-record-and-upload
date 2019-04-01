@@ -89,6 +89,7 @@ for video in videos:
     text = text.split('\n')
     for line in text:
         if "Duration:" in line:
+            print(current_file_name)
             print(line[12:23])
 
 if len(files) > 1:

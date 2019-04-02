@@ -30,6 +30,12 @@ def concat(files):
     inputs = []
     for file in files:
         inputs.append("file '{}'".format(file))
+        filepath = file
+        need_fix, offset = fix_flv.fix_flv(filepath, True)
+        if need_fix:
+            os.rename(filepath, filepath + '.bak')
+            copy(filepath+'.bak', filepath, offset)
+            retimestamp_flv.retimestamp_file_inplace(filepath)
     inputs = '\n'.join(inputs)
     print(inputs)
     f = open('files/inputs.txt', 'w')
@@ -50,18 +56,6 @@ def concat(files):
 
     os.rename(new_file_name, new_file_name[:-8])
     os.remove('files/inputs.txt') if os.path.exists('files/inputs.txt') else None
-
-videos = [f for f in os.listdir('files') if f.endswith('.flv')]
-videos.sort()
-
-
-for video in videos:
-    filepath = os.path.abspath('./files/' + video)
-    need_fix, offset = fix_flv.fix_flv(filepath, True)
-    if need_fix:
-        os.rename(filepath, filepath + '.bak')
-        copy(filepath+'.bak', filepath, offset)
-        retimestamp_flv.retimestamp_file_inplace(filepath)
 
 
 videos = [f for f in os.listdir('files') if f.endswith('.flv')]

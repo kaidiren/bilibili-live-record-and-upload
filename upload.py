@@ -66,6 +66,10 @@ b.upload(parts, title, tid, tag, desc)
 
 open(sub_dir + '.uploaded', 'a').close()
 
+for video in videos:
+    filepath = os.path.abspath(sub_dir + video)
+    os.rename(filepath, filepath + '.uploaded')
+
 
 dirs = [f for f in os.listdir(sub_dir) if os.path.isdir(f)]
 dirs.sort()

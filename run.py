@@ -46,13 +46,17 @@ class BiliBiliLiveRecorder(BiliBiliLive):
         while True:
             urls = self.check(interval=60)
             filename = utils.generate_filename(self.room_id)
+            date = filename[:8]
             filename =  filename.split('.flv')
             filename = filename[0]
             filename = filename.split('_')
             filename.pop()
             filename.append(self.room_title)
             filename = '_'.join(filename) + '.flv'
-            c_filename = os.path.join(os.getcwd(), 'files', filename)
+            sub_dir = 'files/' + date
+            if not os.path.exists(sub_dir):
+                os.mkdir(sub_dir)
+            c_filename = os.path.join(os.getcwd(), sub_dir, filename)
             self.record(urls[0], c_filename)
             self.print(self.room_id, '录制完成')
 

@@ -8,6 +8,7 @@ import multiprocessing
 import urllib3
 from bilibiliupload import *
 urllib3.disable_warnings()
+from datetime import datetime, timedelta
 
 class BiliBiliLiveRecorder(BiliBiliLive):
     def __init__(self, room_id):
@@ -53,6 +54,8 @@ class BiliBiliLiveRecorder(BiliBiliLive):
             filename.pop()
             filename.append(self.room_title)
             filename = '_'.join(filename) + '.flv'
+            if filename[9:11] <= '08':
+                date = datetime.strftime(datetime.now() - timedelta(1), '%Y%m%d')
             sub_dir = 'files/' + date
             if not os.path.exists(sub_dir):
                 os.mkdir(sub_dir)

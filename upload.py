@@ -54,7 +54,7 @@ parts = []
 for video in videos:
     filepath = os.path.abspath(sub_dir + video)
     title = '['+video[9:11] + ':'+video[11:13] + ']' + video[14:-4]
-    if filepath[:8] != yesterday:
+    if video[:8] != yesterday:
         title = '[深夜]' + title
     print(filepath, title)
     parts.append(VideoPart(filepath, title))

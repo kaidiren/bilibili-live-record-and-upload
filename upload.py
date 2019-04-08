@@ -39,7 +39,7 @@ if os.path.isfile(sub_dir + '.uploading'):
 
 open(sub_dir + '.uploading', 'a').close()
 
-desc = '[已授权]陈哥404直播录播, 仅用于回看，请勿商业使用 请关注陈哥直播间 https://live.bilibili.com/404\n服务器每天自动录播自动投稿，文件过大自动分P，凌晨2点定时上传，审稿需要3-6小时请耐心等待\n本录播不做整理，喜欢看整理过的录播可以去空间 11693477 观看，催更毫无意义，谢谢~'
+desc = '[已授权]陈哥404直播录播,仅用于回看,请勿商业使用 请关注陈哥直播间 https://live.bilibili.com/404\n服务器每天自动录制,自动投稿,自动分P,凌晨2点定时上传,审稿需要6-12小时请耐心等待\n本录播不做整理,喜欢看整理过的录播可以去空间 11693477 观看,催更毫无意义,谢谢~'
 
 videos = [f for f in os.listdir(sub_dir) if f.endswith('.flv')]
 videos.sort()
@@ -54,7 +54,7 @@ parts = []
 for video in videos:
     filepath = os.path.abspath(sub_dir + video)
     title = '['+video[9:11] + ':'+video[11:13] + ']' + video[14:-4]
-    if filepath[:8] != yesterday:
+    if video[:8] != yesterday:
         title = '[深夜]' + title
     print(filepath, title)
     parts.append(VideoPart(filepath, title))

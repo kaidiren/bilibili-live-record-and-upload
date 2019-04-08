@@ -43,7 +43,7 @@ class BiliBiliLiveRecorder(BiliBiliLive):
                     break
         os.remove('files/.recording') if os.path.exists('files/.recording') else None
         if os.stat(output_filename).st_size < 1024:
-            os.remove(output_filename)
+            os.rename(output_filename, output_filename + '.skip')
 
     def run(self):
         while True:

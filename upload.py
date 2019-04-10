@@ -4,6 +4,9 @@ import os
 import sys
 import requests
 import shutil
+import traceback
+import logging
+
 from datetime import datetime, timedelta
 
 from bilibiliupload import Bilibili, VideoPart
@@ -64,7 +67,13 @@ title = '[' + yesterday + ']' + parts[0].title[7:]
 tid = 17
 b = Bilibili()
 b.login(config.username, config.password)
-b.upload(parts, title, tid, tag, desc)
+try:
+    b.upload(parts, title, tid, tag, desc)
+except Exception as e:
+    logging.error(traceback.format_exc())
+    os.remove(sub_dir + '.uploading') if os.path.exists(sub_dir + '.uploading') else None
+    sys.exit()
+
 
 open(sub_dir + '.uploaded', 'a').close()
 

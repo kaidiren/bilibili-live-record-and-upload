@@ -82,11 +82,11 @@ for video in videos:
     os.rename(filepath, filepath + '.uploaded')
 
 
-dirs = [f for f in os.listdir(sub_dir) if os.path.isdir(f)]
+dirs = [f for f in os.listdir('files') if os.path.isdir('files/' + f)]
 dirs.sort()
 
 for dir in dirs:
-    dirpath = os.path.abspath(sub_dir + dir)
+    dirpath = os.path.abspath('files/' + dir)
     stat = os.stat(dirpath)
     if time.time() - stat.st_mtime >= 3600 * 24 * 5:
         shutil.rmtree(dirpath)

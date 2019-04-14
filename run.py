@@ -41,6 +41,7 @@ class BiliBiliLiveRecorder(BiliBiliLive):
                 if os.stat(output_filename).st_size >= config.max_sigle_file_size:
                     f.close()
                     break
+            f.close()
         os.remove('files/.recording') if os.path.exists('files/.recording') else None
         if os.stat(output_filename).st_size < 1024:
             os.rename(output_filename, output_filename + '.skip')

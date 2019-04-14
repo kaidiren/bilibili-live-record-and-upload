@@ -88,7 +88,7 @@ dirs.sort()
 for dir in dirs:
     dirpath = os.path.abspath('files/' + dir)
     stat = os.stat(dirpath)
-    if time.time() - stat.st_mtime >= 3600 * 24 * 5:
+    if time.time() - stat.st_mtime >= 3600 * 24 * 13:
         shutil.rmtree(dirpath)
         print(dirpath, 'deleted')
 

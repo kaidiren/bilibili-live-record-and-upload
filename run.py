@@ -36,7 +36,7 @@ class BiliBiliLiveRecorder(BiliBiliLive):
         open('files/.recording', 'a').close()
         resp = requests.get(record_url, stream=True)
         with open(output_filename, "wb") as f:
-            for chunk in resp.iter_content(chunk_size=1024):
+            for chunk in resp.iter_content(chunk_size=1024*1024):
                 f.write(chunk) if chunk else None
                 if os.stat(output_filename).st_size >= config.max_sigle_file_size:
                     f.close()

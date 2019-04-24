@@ -42,7 +42,7 @@ if os.path.isfile(sub_dir + '.uploading'):
 
 open(sub_dir + '.uploading', 'a').close()
 
-desc = '[已授权]陈哥404直播录播,仅用于回看,请勿商业使用 请关注陈哥直播间 https://live.bilibili.com/404\n服务器每天自动录制,自动投稿,自动分P,凌晨2点定时上传,审稿需要6-12小时请耐心等待\n本录播不做整理,喜欢看整理过的录播可以去空间 11693477 观看,催更毫无意义,谢谢~'
+desc = '[已授权]陈哥404直播录播,仅用于回看,请勿商业使用 请关注陈哥直播间 https://live.bilibili.com/404\n服务器每天自动录制,自动投稿,自动分P,凌晨2点定时上传,审稿需要6-12小时请耐心等待\n本录播不做整理,不录弹幕,催更毫无意义,谢谢~'
 
 videos = [f for f in os.listdir(sub_dir) if f.endswith('.flv')]
 videos.sort()

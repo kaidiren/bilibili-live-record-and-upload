@@ -46,7 +46,7 @@ class BiliBiliLiveRecorder(BiliBiliLive):
 
     def run(self):
         while True:
-            urls = self.check(interval=60)
+            urls = self.check(interval=120)
             filename = utils.generate_filename(self.room_id)
             date = filename[:8]
             filename =  filename.split('.flv')

@@ -6,6 +6,7 @@ import requests
 import shutil
 import traceback
 import logging
+import subprocess
 
 from datetime import datetime, timedelta
 
@@ -54,7 +55,7 @@ if not len(videos):
 
 for video in videos:
     filepath = os.path.abspath(sub_dir + video)
-    code, text = commands.getstatusoutput("ffmpeg -i {} -vcodec copy -acodec copy {}.mp4 -y ".format(filepath, filepath[:-4]))
+    code, text = subprocess.getstatusoutput("ffmpeg -i {} -vcodec copy -acodec copy {}.mp4 -y ".format(filepath, filepath[:-4]))
     print(filepath)
     print(code)
     print(text)
@@ -82,8 +83,7 @@ try:
     b.upload(parts, title, tid, tag, desc)
 except Exception as e:
     logging.error(traceback.format_exc())
-    os.remove(sub_dir + '.uploading') if os.path.exists(sub_dir +
-                                                        '.uploading') else None
+    os.remove(sub_dir + '.uploading') if os.path.exists(sub_dir + '.uploading') else None
     sys.exit()
 
 
@@ -104,5 +104,4 @@ for dir in dirs:
         shutil.rmtree(dirpath)
         print(dirpath, 'deleted')
 
-os.remove(sub_dir + '.uploading') if os.path.exists(sub_dir +
-                                                    '.uploading') else None
+os.remove(sub_dir + '.uploading') if os.path.exists(sub_dir + '.uploading') else None

@@ -52,7 +52,7 @@ if not len(videos):
     os.remove(sub_dir + '.uploading') if os.path.exists(sub_dir + '.uploading') else None
     sys.exit()
 
-for videos in videos:
+for video in videos:
     filepath = os.path.abspath(sub_dir + video)
     code, text = commands.getstatusoutput("ffmpeg -i {} -vcodec copy -acodec copy {}.mp4 -y ".format(filepath, filepath[:-4]))
     print(filepath)

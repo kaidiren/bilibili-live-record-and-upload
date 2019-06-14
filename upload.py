@@ -48,9 +48,20 @@ videos = [f for f in os.listdir(sub_dir) if f.endswith('.flv')]
 videos.sort()
 
 if not len(videos):
-   print('no living yesterday: ' + sub_dir)
-   os.remove(sub_dir + '.uploading') if os.path.exists(sub_dir + '.uploading') else None
-   sys.exit()
+    print('no living yesterday: ' + sub_dir)
+    os.remove(sub_dir + '.uploading') if os.path.exists(sub_dir + '.uploading') else None
+    sys.exit()
+
+for videos in videos:
+    filepath = os.path.abspath(sub_dir + video)
+    code, text = commands.getstatusoutput("ffmpeg -i {} -vcodec copy -acodec copy {}.mp4 -y ".format(filepath, filepath[:-4]))
+    print(filepath)
+    print(code)
+    print(text)
+    os.rename(filepath, filepath + '.bak')
+
+videos = [f for f in os.listdir(sub_dir) if f.endswith('.mp4')]
+videos.sort()
 
 tag = ['陈哥404直播录播', '无情服务器录播', '404录播姬']
 parts = []
@@ -71,7 +82,8 @@ try:
     b.upload(parts, title, tid, tag, desc)
 except Exception as e:
     logging.error(traceback.format_exc())
-    os.remove(sub_dir + '.uploading') if os.path.exists(sub_dir + '.uploading') else None
+    os.remove(sub_dir + '.uploading') if os.path.exists(sub_dir +
+                                                        '.uploading') else None
     sys.exit()
 
 
@@ -92,4 +104,5 @@ for dir in dirs:
         shutil.rmtree(dirpath)
         print(dirpath, 'deleted')
 
-os.remove(sub_dir + '.uploading') if os.path.exists(sub_dir + '.uploading') else None
+os.remove(sub_dir + '.uploading') if os.path.exists(sub_dir +
+                                                    '.uploading') else None

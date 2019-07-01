@@ -32,17 +32,24 @@ class BiliBiliLiveRecorder(BiliBiliLive):
         return self.get_live_urls()
 
     def record(self, record_url, output_filename):
-        self.print(self.room_id, '√ 正在录制...' + self.room_id)
-        open('files/.recording', 'a').close()
-        resp = requests.get(record_url, stream=True)
-        with open(output_filename, "wb") as f:
-            for chunk in resp.iter_content(chunk_size=1024*1024):
-                f.write(chunk) if chunk else None
-                if os.stat(output_filename).st_size >= config.max_sigle_file_size:
-                    break
-        os.remove('files/.recording') if os.path.exists('files/.recording') else None
-        if os.stat(output_filename).st_size < 1024:
-            os.rename(output_filename, output_filename + '.skip')
+        try:
+            self.print(self.room_id, '√ 正在录制...' + self.room_id)
+            open('files/.recording', 'a').close()
+            print(record_url)
+            resp = requests.get(record_url, stream=True, timeout=(3, 3600))
+            with open(output_filename, "wb") as f:
+                for chunk in resp.iter_content(chunk_size=1024*1024):
+                    if chunk:
+                        f.write(chunk)
+                    else:
+                        None
+                    if os.stat(output_filename).st_size >= config.max_sigle_file_size:
+                        break
+            os.remove('files/.recording') if os.path.exists('files/.recording') else None
+            if os.stat(output_filename).st_size < 1024:
+                os.rename(output_filename, output_filename + '.skip')
+        except Exception as e:
+            print("type error: " + str(e))
 
     def run(self):
         while True:

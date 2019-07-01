@@ -48,11 +48,6 @@ desc = '[已授权]陈哥404直播录播,仅用于回看,请勿商业使用 请�
 videos = [f for f in os.listdir(sub_dir) if f.endswith('.flv')]
 videos.sort()
 
-if not len(videos):
-    print('no living yesterday: ' + sub_dir)
-    os.remove(sub_dir + '.uploading') if os.path.exists(sub_dir + '.uploading') else None
-    sys.exit()
-
 for video in videos:
     filepath = os.path.abspath(sub_dir + video)
     code, text = subprocess.getstatusoutput("ffmpeg -i {} -vcodec copy -acodec copy {}.mp4 -y ".format(filepath, filepath[:-4]))
@@ -63,6 +58,11 @@ for video in videos:
 
 videos = [f for f in os.listdir(sub_dir) if f.endswith('.mp4')]
 videos.sort()
+
+if not len(videos):
+    print('no living yesterday: ' + sub_dir)
+    os.remove(sub_dir + '.uploading') if os.path.exists(sub_dir + '.uploading') else None
+    sys.exit()
 
 tag = ['陈哥404直播录播', '无情服务器录播', '404录播姬']
 parts = []

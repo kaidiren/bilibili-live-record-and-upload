@@ -8,6 +8,7 @@ import traceback
 import logging
 import subprocess
 
+logging.basicConfig(level=logging.DEBUG)
 from datetime import datetime, timedelta
 
 from bilibiliupload import Bilibili, VideoPart
@@ -50,7 +51,7 @@ videos.sort()
 
 for video in videos:
     filepath = os.path.abspath(sub_dir + video)
-    code, text = subprocess.getstatusoutput("ffmpeg -i {} -vcodec copy -acodec copy {}.mp4 -y ".format(filepath, filepath[:-4]))
+    code, text = subprocess.getstatusoutput('ffmpeg -i "{}" -vcodec copy -acodec copy "{}.mp4" -y '.format(filepath, filepath[:-4]))
     print(filepath)
     print(code)
     print(text)
@@ -91,7 +92,7 @@ open(sub_dir + '.uploaded', 'a').close()
 
 for video in videos:
     filepath = os.path.abspath(sub_dir + video)
-    os.rename(filepath, filepath + '.uploaded')
+    os.remove(filepath)
 
 
 dirs = [f for f in os.listdir('files') if os.path.isdir('files/' + f)]
@@ -100,7 +101,7 @@ dirs.sort()
 for dir in dirs:
     dirpath = os.path.abspath('files/' + dir)
     stat = os.stat(dirpath)
-    if time.time() - stat.st_mtime >= 3600 * 24 * 13:
+    if time.time() - stat.st_mtime >= 3600 * 24 * 7:
         shutil.rmtree(dirpath)
         print(dirpath, 'deleted')
 

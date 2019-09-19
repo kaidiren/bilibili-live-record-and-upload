@@ -38,7 +38,7 @@ class BiliBiliLiveRecorder(BiliBiliLive):
             print(record_url)
             resp = requests.get(record_url, stream=True, timeout=(5, 10))
             with open(output_filename, "wb") as f:
-                for chunk in resp.iter_content(chunk_size=1024*1024):
+                for chunk in resp.iter_content(chunk_size=1024*512):
                     if chunk:
                         f.write(chunk)
                     else:

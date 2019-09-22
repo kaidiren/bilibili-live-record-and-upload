@@ -81,7 +81,7 @@ tid = 17
 b = Bilibili()
 b.login(config.username, config.password)
 try:
-    b.upload(parts, title, tid, tag, desc)
+    b.upload(parts, title, tid, tag, desc, open_elec=0)
 except Exception as e:
     logging.error(traceback.format_exc())
     os.remove(sub_dir + '.uploading') if os.path.exists(sub_dir + '.uploading') else None

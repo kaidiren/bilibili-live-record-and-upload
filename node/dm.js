@@ -8,11 +8,11 @@ new Room({
 }).connect().then(room => {
   room.on('danmaku.message', (msg) => {
     if (msg.type === 'comment') {
-      const time = moment(new Date(msg.ts)).format('YYYY-MM-DD HH:mm:ss')
+      const time = moment(new Date(msg.ts)).utcOffset(8).format('YYYY-MM-DD HH:mm:ss')
       const dm = '[' + time + ']' + msg.comment
-      let date = moment().format('YYYYMMDD')
-      if (moment().hour() <= 8) {
-        date = moment().subtract(1, 'days').format('YYYYMMDD')
+      let date = moment().utcOffset(8).format('YYYYMMDD')
+      if (moment().utcOffset(8).hour() <= 8) {
+        date = moment().utcOffset(8).subtract(1, 'days').format('YYYYMMDD')
       }
       const dir = `files/${date}`
       const file = dir + '/dm.log'

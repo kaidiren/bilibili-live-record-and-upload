@@ -36,7 +36,7 @@ class BiliBiliLiveRecorder(BiliBiliLive):
             self.print(self.room_id, '√ 正在录制...' + self.room_id)
             open('files/.recording', 'a').close()
             print(record_url)
-            resp = requests.get(record_url, stream=True, timeout=(5, 10))
+            resp = requests.get(record_url, stream=True, timeout=(30, 30))
             with open(output_filename, "wb") as f:
                 for chunk in resp.iter_content(chunk_size=1024*512):
                     if chunk:

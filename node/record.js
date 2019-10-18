@@ -21,9 +21,9 @@ const roomID = 12265
     const open = room && room.data && room.data.live_status === 1
     const title = room && room.data && room.data.title
     if (!open) {
-      console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}]`, '未开播等待中')
+      console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}]`, '等待中')
       await sleep(60000)
-      return loop()
+      return Promise.resolve()
     }
     const urls = await rp({
       method: 'GET',
@@ -37,14 +37,15 @@ const roomID = 12265
       json: true
     })
     const streamUri = urls.durl[0].url
-    const filename = `${moment().format('YYYYMMDD_HHmm')}_${title}.flv`
+    const filename = `${moment().format('YYYYMMDD_HHmmss')}_${title}.flv`
     let date = moment()
     if (date.hour() <= 8) {
       date = date.subtract(1, 'day')
     }
     const dir = path.resolve(__dirname, '../files', date.format('YYYYMMDD'))
     mkdirp.sync(dir)
-    const writeStream = fs.createWriteStream(path.resolve(dir, filename))
+    const file = path.resolve(dir, filename)
+    const writeStream = fs.createWriteStream(file)
 
     const readStream = request.get(streamUri, {
       headers: {
@@ -54,35 +55,70 @@ const roomID = 12265
         'Sec-Fetch-Mode': 'cors',
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'
       },
-      timeout: 10000
+      timeout: 30000
     })
+    await save(readStream, writeStream)
+  }
+  while (true) {
+    try {
+      await loop()
+    } catch (e) {
+      console.log(e)
+    }
+  }
+})()
 
+function closeAll (r, w) {
+  r.pause()
+  w.cork()
+  w.destroy()
+  r.destroy()
+}
+async function save (readStream, writeStream) {
+  console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}]`, '录制开始')
+  let downloaded = 0
+  return new Promise((resolve, reject) => {
     readStream
+      .on('data', function (chunk) {
+        downloaded += chunk.length
+        if (downloaded > 1024 * 1024 * 1024) {
+          closeAll(readStream, writeStream)
+          return resolve()
+        }
+      })
       .on('response', function (response) {
         if (response.statusCode !== 200) {
           console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}]`, '录制状态码非200', response.statusCode)
-          readStream.end()
-          return loop()
+          closeAll(readStream, writeStream)
+          return resolve()
         }
       })
-      .on('error', function (err) {
-        console.log('Problem reaching URL: ', err)
-        console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}]`, '录制读取出错')
-        readStream.destroy()
-        return loop()
+      .on('error', function () {
+        console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}]`, '录制结束')
+        closeAll(readStream, writeStream)
+        return resolve()
       })
       .pipe(writeStream)
       .on('finish', function (response) {
-        writeStream.end()
+        closeAll(readStream, writeStream)
         console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}]`, '录制结束')
-        return loop()
+        return resolve()
       })
       .on('error', function (err) {
         console.log('Problem writing file: ', err)
         console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}]`, '录制写入出错')
-        writeStream.destroy()
-        return loop()
+        closeAll(readStream, writeStream)
+        return resolve()
       })
-  }
-  await loop()
-})()
+  })
+}
+
+process.on('uncaughtException', function (err) {
+  console.log(err)
+  process.exit()
+})
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.log('Unhandled Rejection at:', promise, 'reason:', reason)
+  process.exit()
+})

@@ -18,9 +18,10 @@ const roomID = 12265
       json: true,
       timeout: 5000
     })
-    const open = room && room.msg === 'ok'
+    const open = room && room.data && room.data.live_status === 1
     const title = room && room.data && room.data.title
     if (!open) {
+      console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}]`, '未开播等待中')
       await sleep(60000)
       return loop()
     }
@@ -41,7 +42,7 @@ const roomID = 12265
     if (date.hour() <= 8) {
       date = date.subtract(1, 'day')
     }
-    const dir = path.resolve(__dirname, 'files', date.format('YYYYMMDD'))
+    const dir = path.resolve(__dirname, '../files', date.format('YYYYMMDD'))
     mkdirp.sync(dir)
     const writeStream = fs.createWriteStream(path.resolve(dir, filename))
 
@@ -58,19 +59,28 @@ const roomID = 12265
 
     readStream
       .on('response', function (response) {
-        console.log(response.statusCode)
+        if (response.statusCode !== 200) {
+          console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}]`, '录制状态码非200', response.statusCode)
+          readStream.end()
+          return loop()
+        }
       })
       .on('error', function (err) {
         console.log('Problem reaching URL: ', err)
+        console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}]`, '录制读取出错')
+        readStream.destroy()
         return loop()
       })
       .pipe(writeStream)
       .on('finish', function (response) {
-        console.log('done')
+        writeStream.end()
+        console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}]`, '录制结束')
         return loop()
       })
       .on('error', function (err) {
         console.log('Problem writing file: ', err)
+        console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}]`, '录制写入出错')
+        writeStream.destroy()
         return loop()
       })
   }

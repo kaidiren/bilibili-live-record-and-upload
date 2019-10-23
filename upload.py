@@ -69,7 +69,7 @@ tag = ['陈哥404直播录播', '无情服务器录播', '404录播姬']
 parts = []
 for video in videos:
     filepath = os.path.abspath(sub_dir + video)
-    title = '['+video[9:11] + ':'+video[11:13] + ']' + video[14:-4]
+    title = '['+video[9:11] + ':'+video[11:13] + ']' + video[16:-4]
     if video[:8] != yesterday:
         title = '[深夜]' + title
     print(filepath, title)
@@ -101,7 +101,7 @@ dirs.sort()
 for dir in dirs:
     dirpath = os.path.abspath('files/' + dir)
     stat = os.stat(dirpath)
-    if time.time() - stat.st_mtime >= 3600 * 24 * 7:
+    if time.time() - stat.st_mtime >= 3600 * 24 * 5:
         shutil.rmtree(dirpath)
         print(dirpath, 'deleted')
 

@@ -44,6 +44,7 @@ const roomID = 12265
     }
     const dir = path.resolve(__dirname, '../files', date.format('YYYYMMDD'))
     mkdirp.sync(dir)
+    cleanSmallfiles(dir)
     const file = path.resolve(dir, filename)
     const writeStream = fs.createWriteStream(file)
 
@@ -73,6 +74,19 @@ function closeAll (r, w) {
   w.cork()
   w.destroy()
   r.destroy()
+}
+
+function cleanSmallfiles (dir) {
+  const files = fs.readdirSync(dir).filter(o => o.endsWith('.flv'))
+  for (const file of files) {
+    try {
+      if (fs.statSync(path.resolve(dir, file)).size === 0) {
+        fs.unlinkSync(path.resolve(dir, file))
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
 }
 async function save (readStream, writeStream) {
   console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}]`, '录制开始')

@@ -44,7 +44,7 @@ if os.path.isfile(sub_dir + '.uploading'):
 
 open(sub_dir + '.uploading', 'a').close()
 
-desc = '[已授权]陈哥404直播录播,仅用于回看,请勿商业使用 请关注陈哥直播间 https://live.bilibili.com/404\n服务器每天自动录制,自动投稿,自动分P,凌晨2点定时上传,审稿需要6-12小时请耐心等待\n本录播不做整理,不录弹幕,催更毫无意义,谢谢~'
+desc = '[已授权]陈哥404直播录播,仅用于回看,请勿商业使用 请关注陈哥直播间 https://live.bilibili.com/404\n服务器每天自动录制,自动投稿,自动分P,顺延三日发布\n本录播不做整理,不录弹幕,催更毫无意义,谢谢~'
 
 videos = [f for f in os.listdir(sub_dir) if f.endswith('.flv')]
 videos.sort()
@@ -80,8 +80,11 @@ title = '[' + yesterday + ']' + parts[0].title[7:]
 tid = 17
 b = Bilibili()
 b.login(config.username, config.password)
+dtime = datetime.now()
+dtime = int(time.mktime(dtime.timetuple())) + 3600 * 24 * 2
+
 try:
-    b.upload(parts, title, tid, tag, desc, open_elec=0)
+    b.upload(parts, title, tid, tag, desc, open_elec=0, dtime)
 except Exception as e:
     logging.error(traceback.format_exc())
     os.remove(sub_dir + '.uploading') if os.path.exists(sub_dir + '.uploading') else None

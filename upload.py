@@ -82,9 +82,10 @@ b = Bilibili()
 b.login(config.username, config.password)
 dtime = datetime.now()
 dtime = int(time.mktime(dtime.timetuple())) + 3600 * 24 * 2
+dtime = int(dtime / (3600 * 24)) * 3600 * 24 - 3600 * 8
 
 try:
-    b.upload(parts, title, tid, tag, desc, open_elec=0, dtime)
+    b.upload(parts, title, tid, tag, desc, source='', cover='', no_reprint=1, dtime=dtime, open_elec=0)
 except Exception as e:
     logging.error(traceback.format_exc())
     os.remove(sub_dir + '.uploading') if os.path.exists(sub_dir + '.uploading') else None

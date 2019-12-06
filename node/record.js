@@ -27,16 +27,23 @@ const roomID = 12265
     }
     const urls = await rp({
       method: 'GET',
-      uri: 'https://api.live.bilibili.com/api/playurl',
+      uri: 'https://api.live.bilibili.com/room/v1/Room/playUrl',
       qs: {
         cid: roomID,
-        otype: 'json',
-        quality: 0,
+        quality: 4,
         platform: 'web'
+      },
+      headers: {
+        'cache-control': 'no-cache',
+        Connection: 'keep-alive',
+        Host: 'api.live.bilibili.com',
+        'Cache-Control': 'no-cache',
+        Accept: 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'
       },
       json: true
     })
-    const streamUri = urls.durl[0].url
+    const streamUri = urls.data.durl[0].url
     const filename = `${moment().format('YYYYMMDD_HHmmss')}_${title}.flv`
     let date = moment()
     if (date.hour() <= 8) {

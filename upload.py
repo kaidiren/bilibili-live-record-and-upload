@@ -85,7 +85,7 @@ dtime = int(time.mktime(dtime.timetuple())) + 3600 * 24 * 2
 dtime = int(dtime / (3600 * 24)) * 3600 * 24 - 3600 * 8
 
 try:
-    b.upload(parts, title, tid, tag, desc, source='', cover='', no_reprint=1, dynamic='', dtime=dtime)
+    b.upload(parts, title, tid, tag, desc, source='', cover='', no_reprint=1, dynamic='', dtime=dtime, open_elec=False, open_subtitle=False, max_retry=30)
 except Exception as e:
     logging.error(traceback.format_exc())
     os.remove(sub_dir + '.uploading') if os.path.exists(sub_dir + '.uploading') else None
